@@ -1,12 +1,9 @@
 package com.hotel_booking.hotel_booking.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hotel_booking.hotel_booking.Entities.UserLogin;
@@ -26,13 +23,8 @@ public class UserLoginController {
 	}
 	
 	@PostMapping("/login")
-	public String checkLogin(@RequestBody UserLogin userLogin) {
-		return userLoginService.checkLogin(userLogin.getEmail_id(),userLogin.getPassword());
+	public String login(@RequestBody UserLogin userLogin) {
+		return userLoginService.login(userLogin.getEmail_id(),userLogin.getPassword());
 	}
 	
-	@GetMapping("/search")
-	public ResponseEntity<String> login(@RequestParam("query") String query){
-		return ResponseEntity.ok(userLoginService.login(query));
-	}
-
 }

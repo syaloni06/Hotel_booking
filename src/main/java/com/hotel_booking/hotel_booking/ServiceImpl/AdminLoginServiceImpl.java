@@ -21,7 +21,7 @@ public class AdminLoginServiceImpl implements AdminLoginService{
 	}
 
 	@Override // to check the login credentials
-	public String checkLogin(String admin_email_id, String password) {
+	public String login(String admin_email_id, String password) {
 		try {
 			AdminLogin al = adminLoginRepository.findById(admin_email_id).get();
 			if(password.equals(al.getPassword())) {
@@ -37,10 +37,5 @@ public class AdminLoginServiceImpl implements AdminLoginService{
 		return "Incorrect user_id, Please register Yourself";
 	}
 
-	@Override
-	public String login(String query) {
-		AdminLogin adminLogin = adminLoginRepository.login(query);
-		return "You are welcome";
-	}
 
 }

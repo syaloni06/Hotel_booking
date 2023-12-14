@@ -21,7 +21,7 @@ public class UserLoginServiceImpl implements UserLoginService{
 	}
 
 	@Override // to check the login credentials
-	public String checkLogin(String email_id, String password) {
+	public String login(String email_id, String password) {
 		
 		try {
 			UserLogin ul = userLoginRepository.findById(email_id).get();
@@ -39,11 +39,6 @@ public class UserLoginServiceImpl implements UserLoginService{
 		return "Incorrect user_id, Please register Yourself";
 	}
 
-	@Override
-	public String login(String query) {
-		UserLogin userLogin = userLoginRepository.login(query);
-		return "You are welcome";
-	}
 
 
 }
