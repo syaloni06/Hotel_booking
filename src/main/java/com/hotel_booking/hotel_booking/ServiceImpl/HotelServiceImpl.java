@@ -1,6 +1,7 @@
 package com.hotel_booking.hotel_booking.ServiceImpl;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,16 +60,21 @@ public class HotelServiceImpl implements HotelService{
 	@Override // to book hotel for user
 	public String HotelBooking(User user) {
 		List<Booking> booking = user.getBooking();
-		Long d = user.getUser_id();
 		Double sum = 0.00;
 		for(Booking i: booking) {
-			Hotel h = hotelRepository.findById(i.getHotel_id()).get();
-			User u = userRepository.findById(d).get();
+			Hotel h;
+			try {
+				h=hotelRepository.findById(i.getHotel_id()).get();
+			}
+			catch(NoSuchElementException e) {
+				return "This hotel id: "+ i.getHotel_id()+ " doesn't exist";
+			}
+//			User u = userRepository.findById(d).get();
 			int no_of_days = i.getCheckout_date().getDayOfMonth()-i.getCheckin_date().getDayOfMonth()+1;
-			i.setUser(u);
+			i.setUser(user);
 			try {
 				if(h.getTotal_no_of_rooms()<i.getNo_of_rooms()) {
-					throw new RuntimeException("Insufficient stock for product: " + h.getHotel_name());
+					throw new RuntimeException("Insufficient rooms for hotel: " + h.getHotel_name());
 				}
 //				sum += i.getNo_of_rooms()*h.getPrice();
 				i.setTotal_price(i.getNo_of_rooms()*h.getPrice()*no_of_days);
@@ -79,7 +85,7 @@ public class HotelServiceImpl implements HotelService{
 
 			}
 			catch(RuntimeException e) {
-				e.getMessage();
+				return e.getMessage();
 			}
 		}
 		user.setTotal_bill(sum);
